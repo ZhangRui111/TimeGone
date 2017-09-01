@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background_color_main"
+    tools:context=".MainActivity">
+
+    <com.example.john.timegone.MiClockView
+        android:id="@+id/TimeClock"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:layout_centerHorizontal="true"
+        app:backgroundColor="@color/background_color_main"
+        app:darkColor="#80ffffff"
+        app:lightColor="#ffffff"
+        app:textSize="14sp" />
+
+    <LinearLayout
+        android:id="@+id/timeShowHolder"
+        android:orientation="horizontal"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/TimeClock"
+        android:gravity="center_horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/TimeHourShowTxt"
+            android:text="21:"
+            android:textColor="@color/text_color_n"
+            android:textSize="@dimen/text_size_l"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:id="@+id/TimeMiniteShowTxt"
+            android:text="10:"
+            android:textColor="@color/text_color_n"
+            android:textSize="@dimen/text_size_l"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:id="@+id/TimeSecondShowTxt"
+            android:text="05:"
+            android:textColor="@color/text_color_n"
+            android:textSize="@dimen/text_size_l"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:id="@+id/TimeMileSecondShowTxt"
+            android:text="99"
+            android:textColor="@color/text_color_n"
+            android:textSize="@dimen/text_size_l"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/SayingShowTxt"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/timeShowHolder"
+        android:text="Time is gone!"
+        android:textColor="@color/text_color_n"
+        android:gravity="center"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="15dp"
+        android:textSize="@dimen/text_size_n"
+        android:layout_width="match_parent"
+        android:layout_height="100dp" />
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fa_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginRight="20dp"
+        android:layout_alignParentRight="true"
+        android:layout_marginBottom="20dp"
+        app:fabSize="normal"
+        app:backgroundTint="@color/floatbutton_color_n"/>
+</RelativeLayout>

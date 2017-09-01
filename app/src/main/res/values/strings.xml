@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">MiClockView</string>
+    
+    <string name="counttimer_clues_end">End!</string>
+</resources>
