@@ -7,6 +7,6 @@
     <color name="background_color_main">#237EAD</color>
 
     <color name="text_color_n">#FFFFFF</color>
-    <color name="floatbutton_color_n">#1E90FF</color>
+    <color name="floatbutton_color_n">#237EAD</color>
     <color name="floatbutton_color_p">#4169E1</color>
 </resources>

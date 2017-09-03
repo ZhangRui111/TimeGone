@@ -8,4 +8,7 @@
     <dimen name="text_size_n">24sp</dimen>
     <dimen name="text_size_s">16sp</dimen>
     <dimen name="text_size_xs">8sp</dimen>
+
+    <dimen name="layout_marginTop">30dp</dimen>
+    <dimen name="dimen_between_two_widget">15dp</dimen>
 </resources>

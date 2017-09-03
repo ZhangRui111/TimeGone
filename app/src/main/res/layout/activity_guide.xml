@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:background="@color/background_color_main"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_marginTop="@dimen/layout_marginTop"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_margin="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:text="国家"
+                android:gravity="right|center_vertical"
+                android:textSize="@dimen/text_size_n"
+                android:textColor="@color/text_color_n"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content" />
+            <net.qiujuer.genius.ui.widget.Button
+                android:id="@+id/select_country_button"
+                android:text="Click"
+                android:textSize="@dimen/text_size_s"
+                android:textColor="@color/text_color_n"
+                android:layout_marginLeft="@dimen/dimen_between_two_widget"
+                android:background="@color/background_color_main"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_margin="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:text="省份"
+                android:gravity="right|center_vertical"
+                android:textSize="@dimen/text_size_n"
+                android:textColor="@color/text_color_n"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content" />
+            <net.qiujuer.genius.ui.widget.Button
+                android:id="@+id/select_province_button"
+                android:text="Click"
+                android:textSize="@dimen/text_size_s"
+                android:textColor="@color/text_color_n"
+                android:layout_marginLeft="@dimen/dimen_between_two_widget"
+                android:background="@color/background_color_main"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_margin="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:text="职业"
+                android:gravity="right|center_vertical"
+                android:textSize="@dimen/text_size_n"
+                android:textColor="@color/text_color_n"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content" />
+            <net.qiujuer.genius.ui.widget.Button
+                android:id="@+id/select_occupation_button"
+                android:text="Click"
+                android:textSize="@dimen/text_size_s"
+                android:textColor="@color/text_color_n"
+                android:layout_marginLeft="@dimen/dimen_between_two_widget"
+                android:background="@color/background_color_main"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_margin="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:text="生日"
+                android:gravity="right|center_vertical"
+                android:textSize="@dimen/text_size_n"
+                android:textColor="@color/text_color_n"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content" />
+            <net.qiujuer.genius.ui.widget.Button
+                android:id="@+id/select_birthday_button"
+                android:text="Click"
+                android:textSize="@dimen/text_size_s"
+                android:textColor="@color/text_color_n"
+                android:layout_marginLeft="@dimen/dimen_between_two_widget"
+                android:background="@color/background_color_main"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_margin="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <net.qiujuer.genius.ui.widget.Button
+                android:id="@+id/start_main_act_button"
+                android:layout_gravity="center_horizontal"
+                android:text="Start"
+                android:textColor="@color/text_color_n"
+                android:background="@color/background_color_main"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+    </LinearLayout>
+
+
+    <TextView
+        android:text="@string/data_resource_declaration"
+        android:layout_margin="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+</LinearLayout>

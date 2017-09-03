@@ -1,4 +1,4 @@
-package com.example.john.timegone;
+package com.example.john.timegone.View;
 
 import android.animation.PropertyValuesHolder;
 import android.animation.TimeInterpolator;
@@ -17,6 +17,9 @@ import android.graphics.SweepGradient;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
+
+import com.example.john.timegone.Tools.DensityUtils;
+import com.example.john.timegone.R;
 
 import java.util.Calendar;
 

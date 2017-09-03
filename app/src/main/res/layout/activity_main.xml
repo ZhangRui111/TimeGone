@@ -7,7 +7,7 @@
     android:background="@color/background_color_main"
     tools:context=".MainActivity">
 
-    <com.example.john.timegone.MiClockView
+    <com.example.john.timegone.View.MiClockView
         android:id="@+id/TimeClock"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

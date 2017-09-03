@@ -29,6 +29,9 @@ public class MainActivity extends AppCompatActivity {
         countMileSecondTimer.start();
     }
 
+    /**
+     * Setup countTimer
+     */
     private CountDownTimer countHourTimer = new CountDownTimer(7200000, 1000) {
 
         @Override
