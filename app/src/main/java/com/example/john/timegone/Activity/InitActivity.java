@@ -30,7 +30,7 @@ public class InitActivity extends AppCompatActivity {
             finish();//销毁初始化界面
         } else {
             //false，没设置过，进入设置向导界面
-//            SpTools.setBoolean(getApplicationContext(), MyConstants.ISSETUP, true);
+            SpTools.setBoolean(getApplicationContext(), MyConstants.ISSETUP, true);
             Intent intent = new Intent(InitActivity.this,GuideActivity.class);
             startActivity(intent);//向导界面
             finish();//销毁初始化界面

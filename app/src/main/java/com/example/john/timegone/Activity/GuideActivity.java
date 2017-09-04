@@ -3,18 +3,33 @@ package com.example.john.timegone.Activity;
 import android.app.DatePickerDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.john.timegone.MainActivity;
 import com.example.john.timegone.R;
 
 import java.util.Calendar;
+
+import static com.example.john.timegone.Data.FactorForLifespan.countryCodeList;
+import static com.example.john.timegone.Data.FactorForLifespan.hourLeft;
+import static com.example.john.timegone.Data.FactorForLifespan.minuteLeft;
+import static com.example.john.timegone.Data.FactorForLifespan.occupationCodeList;
+import static com.example.john.timegone.Data.FactorForLifespan.provinceCodeList;
+import static com.example.john.timegone.Data.FactorForLifespan.secondLeft;
+import static com.example.john.timegone.Tools.Calculation.calcuRestHour;
+import static com.example.john.timegone.Tools.Calculation.calcuRestMinute;
+import static com.example.john.timegone.Tools.Calculation.calcuRestSecond;
+import static com.example.john.timegone.Tools.Utils.funcReadFactorFromSharePre;
 
 /**
  * Created by john on 2017/9/3.
@@ -24,6 +39,9 @@ public class GuideActivity extends AppCompatActivity implements View.OnClickList
 
     private Button startMainActBtn;
     private Button selectCountryBtn, selectProvinceBtn, selectOccupBtn, selectBirthBtn;
+    private String initCountryStr, initProvinceStr, initOccupStr, initBirthStr;
+    private int user_country, user_province, user_occupa, user_year, user_month, user_day;
+    private Boolean[] isAllSelect = new Boolean[]{false, false, false, false};  //四个选项全为True，才可以跳转
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -60,9 +78,24 @@ public class GuideActivity extends AppCompatActivity implements View.OnClickList
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.start_main_act_button:
-                Intent intent = new Intent(this, MainActivity.class);
-                startActivity(intent);
-                finish();
+                if(isAllSelect[0] && isAllSelect[1] && isAllSelect[2] && isAllSelect[3]){
+                    //全部选项均选择后，判断是否存储数据成功
+                    if(funcSaveFactorInSharePre()) {
+                        //计算剩余时间并保存
+                        funcReadFactorFromSharePre(this);  //首先将各个要素写入才能使用
+                        hourLeft = calcuRestHour();
+                        minuteLeft = calcuRestMinute();
+                        secondLeft = calcuRestSecond();
+                        //Toast.makeText(this, "" + hourLeft + ":" + minuteLeft + ":" +secondLeft, Toast.LENGTH_SHORT).show();
+                        if(funcSaveTimeInSharePre()) {
+                            funcConfirmInfo(initCountryStr+"-"+initProvinceStr+"\n"+initOccupStr+"\n"+initBirthStr);
+                        }
+                    } else {
+                        funcAlertInfo("Couldn't save data in local!");
+                    }
+                } else {
+                    funcAlertInfo("Some information is missing!");
+                }
                 break;
             case R.id.select_country_button:
                 funcSelectCountryDialog();
@@ -82,55 +115,132 @@ public class GuideActivity extends AppCompatActivity implements View.OnClickList
     }
 
     /**
+     * 保存 LifeSpan factor in local
+     * @return
+     */
+    private boolean funcSaveFactorInSharePre() {
+        Boolean result;
+        try {
+            SharedPreferences.Editor editor = getSharedPreferences("user_lifespan_factor",MODE_PRIVATE).edit();
+            editor.putInt("id",0);
+            editor.putString("user_name","Tom");
+            editor.putInt("countryCode",user_country);
+            editor.putInt("provinceCode",user_province);
+            editor.putInt("occupationCode",user_occupa);
+            editor.putInt("birthYear",user_year);
+            editor.putInt("birthMonth",user_month);
+            editor.putInt("birthDay",user_day);
+            editor.apply();
+            result = true;
+        } catch (Exception e) {
+            result = false;
+        }
+        return result;
+    }
+
+    /**
+     * 保存剩余时间
+     * @return
+     */
+    private boolean funcSaveTimeInSharePre() {
+        Boolean result;
+        try {
+            SharedPreferences.Editor editor = getSharedPreferences("user_left_time",MODE_PRIVATE).edit();
+            editor.putInt("id",0);
+            editor.putString("user_name","Tom");
+            editor.putLong("hourLeft",hourLeft.longValue());
+            editor.putLong("minuteLeft",minuteLeft.longValue());
+            editor.putLong("secondLeft",secondLeft.longValue());
+            editor.apply();
+            result = true;
+        } catch (Exception e) {
+            result = false;
+        }
+        return result;
+    }
+
+    private void funcConfirmInfo(String msg) {
+        AlertDialog.Builder builder = new android.support.v7.app.AlertDialog.Builder(this);
+        builder.setTitle("Confirm");
+        builder.setMessage(msg);
+        builder.setNegativeButton("取消", null);
+        builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Intent intent = new Intent(GuideActivity.this, MainActivity.class);
+                startActivity(intent);
+                finish();
+            }
+        });
+        builder.show();
+    }
+
+    private void funcAlertInfo(String msg) {
+        AlertDialog.Builder builder = new android.support.v7.app.AlertDialog.Builder(this);
+        builder.setTitle("Warning");
+        builder.setMessage(msg);
+        builder.setPositiveButton("确定", null);
+        builder.show();
+    }
+
+    /**
      * 选择相关信息以计算剩余时间
      */
     private void funcSelectCountryDialog() {
-        final String countryList[] = new String[]{"中国"};
+        final String countryList[] = countryCodeList;
         AlertDialog.Builder builder = new android.support.v7.app.AlertDialog.Builder(this);
         builder.setTitle("Select your country");
         builder.setNegativeButton("取消", null);
         builder.setPositiveButton("确定", null);
-        builder.setSingleChoiceItems(countryList, 1, new DialogInterface.OnClickListener() {
+        builder.setSingleChoiceItems(countryList, 0, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                selectCountryBtn.setText(countryList[0]);
+                if (which != 0) {
+                    user_country = which;
+                    initCountryStr = countryList[which];
+                    isAllSelect[0] = true;
+                    selectCountryBtn.setText(countryList[which]);
+                }
             }
         });
         builder.show();
     }
 
     private void funcSelectProvinceDialog() {
-/*        final String countryList[] = new String[]{"北京市", "天津市", "河北省", "山西省", "内蒙古自治区", "辽宁省",
-                "吉林省", "黑龙江省", "上海市", "江苏省", "浙江省", "安徽省", "福建省", "江西省", "山东省", "河南省", "湖北省",
-                "湖南省", "广东省", "广西壮族自治区", "海南省", "重庆市", "四川省", "贵州省", "云南省", "西藏自治区",
-                "陕西省", "甘肃省", "青海省", "宁夏回族自治区", "台湾省", "新疆维吾尔自治区", "香港特别行政区", "澳门特别行政区}";*/
-        final String provinceList[] = new String[]{"北京", "天津", "河北", "山西", "内蒙古", "辽宁",
-                "吉林", "黑龙江", "上海", "江苏", "浙江", "安徽", "福建", "江西", "山东", "河南", "湖北",
-                "湖南", "广东", "广西", "海南", "重庆", "四川", "贵州", "云南", "西藏", "陕西", "甘肃",
-                "青海", "宁夏", "台湾", "新疆", "香港", "澳门}"};
+        final String provinceList[] = provinceCodeList;
         AlertDialog.Builder builder = new android.support.v7.app.AlertDialog.Builder(this);
         builder.setTitle("Select your province");
         builder.setNegativeButton("取消", null);
         builder.setPositiveButton("确定", null);
-        builder.setSingleChoiceItems(provinceList, 1, new DialogInterface.OnClickListener() {
+        builder.setSingleChoiceItems(provinceList, 0, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                selectProvinceBtn.setText(provinceList[which]);
+                if (which != 0){
+                    user_province = which;
+                    initProvinceStr = provinceList[which];
+                    isAllSelect[1] = true;
+                    selectProvinceBtn.setText(provinceList[which]);
+                }
             }
         });
         builder.show();
     }
 
     private void funcSelectOccupDialog() {
-        final String occupList[] = new String[]{"程序员", "产品经理", "大佬", "学生"};
+        final String occupList[] = occupationCodeList;
         AlertDialog.Builder builder = new android.support.v7.app.AlertDialog.Builder(this);
         builder.setTitle("Select your occupation");
         builder.setNegativeButton("取消", null);
         builder.setPositiveButton("确定", null);
-        builder.setSingleChoiceItems(occupList, 1, new DialogInterface.OnClickListener() {
+        builder.setSingleChoiceItems(occupList, 0, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                selectOccupBtn.setText(occupList[which]);
+                if (which != 0){
+                    user_occupa = which;
+                    initOccupStr = occupList[which];
+                    isAllSelect[2] = true;
+                    selectOccupBtn.setText(occupList[which]);
+                }
             }
         });
         builder.show();
@@ -144,15 +254,24 @@ public class GuideActivity extends AppCompatActivity implements View.OnClickList
         int month = calendar.get(Calendar.MONTH);
         int day = calendar.get(Calendar.DAY_OF_MONTH);
         //实例化DatePickerDialog对象
-        DatePickerDialog datePickerDialog = new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
+        DatePickerDialog datePickerDialog = new DatePickerDialog(this, R.style.MyDatePickerDialogTheme,new DatePickerDialog.OnDateSetListener() {
             //选择完日期后会调用该回调函数
             @Override
             public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
                 //因为monthOfYear会比实际月份少一月所以这边要加1
+                user_year = year;
+                user_month = monthOfYear+1;
+                user_day = dayOfMonth;
                 birthday.append(year + "-" + (monthOfYear+1) + "-" + dayOfMonth);
+                initBirthStr = birthday.toString();
+                isAllSelect[3] = true;
                 selectBirthBtn.setText(birthday);
             }
         }, year, month, day);
+        //设置生日的上限是今天，下限是100年前
+        calendar.add(Calendar.YEAR, -100);
+        datePickerDialog.getDatePicker().setMaxDate(System.currentTimeMillis());
+        datePickerDialog.getDatePicker().setMinDate(calendar.getTimeInMillis());
         //弹出选择日期对话框
         datePickerDialog.show();
     }

@@ -118,6 +118,22 @@
                 android:id="@+id/start_main_act_button"
                 android:layout_gravity="center_horizontal"
                 android:text="Start"
+                android:textSize="@dimen/text_size_n"
+                android:textColor="@color/text_color_n"
+                android:background="@color/background_color_main"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_margin="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <net.qiujuer.genius.ui.widget.TextView
+                android:layout_gravity="center_horizontal"
+                android:text="Warning! You have only one chance to this Page!"
                 android:textColor="@color/text_color_n"
                 android:background="@color/background_color_main"
                 android:layout_width="wrap_content"
@@ -129,6 +145,7 @@
     <TextView
         android:text="@string/data_resource_declaration"
         android:layout_margin="10dp"
+        android:gravity="center"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 </LinearLayout>
