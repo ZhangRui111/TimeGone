@@ -4,9 +4,24 @@
     <color name="colorPrimaryDark">#237EAD</color>
     <color name="colorAccent">#FF4081</color>
 
-    <color name="background_color_main">#237EAD</color>
+    <color name="background_color_main">#4A90E2</color>
 
     <color name="text_color_n">#FFFFFF</color>
-    <color name="floatbutton_color_n">#237EAD</color>
-    <color name="floatbutton_color_p">#4169E1</color>
+    <color name="floatbutton_color_n">#FFFFFF</color>
+    <color name="floatbutton_color_p">#CCCCCC</color>
+
+    <color name="flat_pressed">#66999999</color>
+    <color name="flat_disabled_text">#40000000</color>
+    <color name="flat_normal_text">#000000</color>
+    <color name="black_semi_transparent">#B2000000</color>
+    <color name="background">#e5e5e5</color>
+    <color name="half_black">#808080</color>
+    <color name="white">#fafafa</color>
+    <color name="white_pressed">#f1f1f1</color>
+    <color name="pink">#e91e63</color>
+    <color name="pink_pressed">#ec407a</color>
+    <color name="blue_semi_transparent">#805677fc</color>
+    <color name="blue_semi_transparent_pressed">#80738ffe</color>
+    <color name="blue_background_float_button_normal">#6495ED</color>
+    <color name="blue_background_float_button_pressed">#80738ffe</color>
 </resources>

@@ -34,5 +34,7 @@ dependencies {
     compile 'com.jph.takephoto:takephoto_library:4.0.3'
     //CircleImageView
     compile 'de.hdodenhof:circleimageview:2.1.0'
+    //FloatButtonMenu
+    compile 'com.getbase:floatingactionbutton:1.10.1'
     testCompile 'junit:junit:4.12'
 }
