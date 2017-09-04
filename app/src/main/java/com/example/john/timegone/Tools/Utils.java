@@ -35,6 +35,28 @@ public class Utils {
         birthDay = pref.getInt("birthDay", -1);
     }
 
+    public static long funcReadNewCountdownFromSharePre(String flag, Context context) {
+        long result = -1L;
+        SharedPreferences pref = context.getSharedPreferences("new_countdown",MODE_PRIVATE);
+        switch (flag) {
+            case "flag":
+                result = pref.getInt("flag", -1);
+                break;
+            case "newCountdownHour":
+                result = pref.getLong("newCountdownHour", -1L);
+                break;
+            case "newCountdownMinute":
+                result = pref.getLong("newCountdownMinute", -1L);
+                break;
+            case "newCountdownSecond":
+                result = pref.getLong("newCountdownSecond", -1L);
+                break;
+            default:
+                break;
+        }
+        return result;
+    }
+
     //状态栏沉浸相关
     public static void setStateBarColor(Activity activity) {
         // 设置状态栏颜色

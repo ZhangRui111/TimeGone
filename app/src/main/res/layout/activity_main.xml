@@ -58,6 +58,47 @@
             android:layout_height="wrap_content" />
     </LinearLayout>
 
+    <LinearLayout
+        android:id="@+id/newCountDownHolder"
+        android:orientation="horizontal"
+        android:visibility="gone"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp"
+        android:layout_below="@id/timeShowHolder"
+        android:gravity="center_horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/newCountDownHourShowTxt"
+            android:text="0:"
+            android:textColor="@color/text_color_n"
+            android:textSize="@dimen/text_size_s"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:id="@+id/newCountDownMinuteShowTxt"
+            android:text="0:"
+            android:textColor="@color/text_color_n"
+            android:textSize="@dimen/text_size_s"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:id="@+id/newCountDownSecondShowTxt"
+            android:text="0:"
+            android:textColor="@color/text_color_n"
+            android:textSize="@dimen/text_size_s"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:id="@+id/newCountDownMileSecondShowTxt"
+            android:text="0"
+            android:textColor="@color/text_color_n"
+            android:textSize="@dimen/text_size_s"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+
     <TextView
         android:id="@+id/SayingShowTxt"
         android:layout_centerHorizontal="true"
@@ -67,44 +108,12 @@
         android:gravity="center"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
-        android:layout_marginTop="15dp"
+        android:layout_alignParentBottom="true"
         android:textSize="@dimen/text_size_s"
         android:layout_width="match_parent"
         android:layout_height="100dp" />
 
-    <com.getbase.floatingactionbutton.FloatingActionsMenu
-        android:id="@+id/multiple_actions"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        fab:fab_addButtonSize="mini"
-        fab:fab_addButtonColorNormal="@color/floatbutton_color_n"
-        fab:fab_addButtonColorPressed="@color/floatbutton_color_p"
-        fab:fab_addButtonPlusIconColor="@color/half_black"
-        fab:fab_labelStyle="@style/menu_labels_style"
-        android:layout_marginBottom="16dp"
-        android:layout_marginRight="16dp"
-        android:layout_marginEnd="16dp">
-        <com.getbase.floatingactionbutton.FloatingActionButton
-            android:id="@+id/fa_new_timer_btn"
-            fab:fabSize="normal"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@mipmap/ic_add_black_24dp"
-            fab:fab_colorNormal="@color/floatbutton_color_n"
-            fab:fab_colorPressed="@color/floatbutton_color_p"/>
-        <!--<com.getbase.floatingactionbutton.FloatingActionButton
-            android:id="@+id/fa_flash_btn"
-            android:src="@mipmap/ic_exposure_plus_1_black_24dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:fab_colorNormal="@color/floatbutton_color_n"
-            app:fab_colorPressed="@color/floatbutton_color_p"/>-->
-    </com.getbase.floatingactionbutton.FloatingActionsMenu>
-
-    <!--<android.support.design.widget.FloatingActionButton
+    <android.support.design.widget.FloatingActionButton
         android:id="@+id/fa_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -112,6 +121,7 @@
         android:layout_marginRight="20dp"
         android:layout_alignParentRight="true"
         android:layout_marginBottom="20dp"
-        app:fabSize="normal"
-        app:backgroundTint="@color/floatbutton_color_n"/>-->
+        app:fabSize="mini"
+        android:src="@mipmap/ic_add_black_24dp"
+        app:backgroundTint="@color/floatbutton_color_n"/>
 </RelativeLayout>

@@ -87,6 +87,7 @@ public class GuideActivity extends AppCompatActivity implements View.OnClickList
             case R.id.start_main_act_button:
                 if(isAllSelect[0] && isAllSelect[1] && isAllSelect[2] && isAllSelect[3]){
                     //全部选项均选择后，判断是否存储数据成功
+                    funcSaveNewCountdownInSharePre();  // 保存新倒计时的SharePre文件
                     if(funcSaveFactorInSharePre()) {
                         //计算剩余时间并保存
                         funcReadFactorFromSharePre(this);  //首先将各个要素写入才能使用
@@ -166,6 +167,28 @@ public class GuideActivity extends AppCompatActivity implements View.OnClickList
         return result;
     }
 
+    /**
+     * 保存剩余时间
+     * @return
+     */
+    private boolean funcSaveNewCountdownInSharePre() {
+        Boolean result;
+        try {
+            SharedPreferences.Editor editor = getSharedPreferences("new_countdown",MODE_PRIVATE).edit();
+            editor.putInt("id",0);
+            editor.putString("user_name","Tom");
+            editor.putInt("flag",0);
+            editor.putString("name","");
+            editor.putLong("newCountdownHour",-1L);
+            editor.putLong("newCountdownMinute",-1L);
+            editor.putLong("newCountdownSecond",-1L);
+            editor.apply();
+            result = true;
+        } catch (Exception e) {
+            result = false;
+        }
+        return result;
+    }
     private void funcConfirmInfo(String msg) {
         AlertDialog.Builder builder = new android.support.v7.app.AlertDialog.Builder(this);
         builder.setTitle("Confirm");
