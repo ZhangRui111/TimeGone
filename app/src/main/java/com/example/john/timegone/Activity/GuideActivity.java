@@ -32,6 +32,7 @@ import static com.example.john.timegone.Tools.Calculation.calcuRestHour;
 import static com.example.john.timegone.Tools.Calculation.calcuRestMinute;
 import static com.example.john.timegone.Tools.Calculation.calcuRestSecond;
 import static com.example.john.timegone.Tools.Utils.funcReadFactorFromSharePre;
+import static com.example.john.timegone.Tools.Utils.funcSaveEnterFlagInSharePre;
 import static com.example.john.timegone.Tools.Utils.funcSaveFactorInSharePre;
 import static com.example.john.timegone.Tools.Utils.funcSaveTimeInSharePre;
 
@@ -233,6 +234,7 @@ public class GuideActivity extends BaseActivity implements View.OnClickListener 
         builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
+                funcSaveEnterFlagInSharePre(GuideActivity.this, 1);  //设置标志位，之后的登陆跳过引导页
                 Intent intent = new Intent(GuideActivity.this, MainActivity.class);
                 startActivity(intent);
                 finish();

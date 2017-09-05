@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">TimeGone</string>
+    <string name="app_name">LifeClock</string>
     
     <string name="counttimer_clues_end">End!</string>
     <string name="data_resource_declaration">All data comes from internet. All rights reserved.</string>

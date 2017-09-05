@@ -102,6 +102,13 @@ public class Utils {
         editor.apply();
     }
 
+    //Save 信号决定是否跳过向导而直接进入主界面
+    public static void funcSaveEnterFlagInSharePre(Context context, int flag) {
+        SharedPreferences.Editor editor = context.getSharedPreferences("if_main_page",MODE_PRIVATE).edit();
+        editor.putInt("enter",flag);  //1 - 跳过；0 - 进入引导页
+        editor.apply();
+    }
+
     /**
      * 读取 SharePreferences
      */
@@ -162,6 +169,11 @@ public class Utils {
         return result;
     }
 
+    //Save 信号决定是否跳过向导而直接进入主界面
+    public static int funcReadEnterFlagInSharePre(Context context) {
+        SharedPreferences pref = context.getSharedPreferences("if_main_page",MODE_PRIVATE);
+        return pref.getInt("enter", -1);
+    }
     /**
      * 更新
      */
