@@ -7,18 +7,14 @@ import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.CountDownTimer;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.DatePicker;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.john.timegone.MainActivity;
 import com.example.john.timegone.R;
@@ -36,18 +32,20 @@ import static com.example.john.timegone.Tools.Calculation.calcuRestHour;
 import static com.example.john.timegone.Tools.Calculation.calcuRestMinute;
 import static com.example.john.timegone.Tools.Calculation.calcuRestSecond;
 import static com.example.john.timegone.Tools.Utils.funcReadFactorFromSharePre;
+import static com.example.john.timegone.Tools.Utils.funcSaveFactorInSharePre;
+import static com.example.john.timegone.Tools.Utils.funcSaveTimeInSharePre;
 
 /**
  * Created by john on 2017/9/3.
  */
 
-public class GuideActivity extends AppCompatActivity implements View.OnClickListener {
+public class GuideActivity extends BaseActivity implements View.OnClickListener {
 
-    private Button startMainActBtn;
-    private Button selectCountryBtn, selectProvinceBtn, selectOccupBtn, selectBirthBtn;
-    private String initCountryStr, initProvinceStr, initOccupStr, initBirthStr;
-    private int user_country, user_province, user_occupa, user_year, user_month, user_day;
-    private Boolean[] isAllSelect = new Boolean[]{false, false, false, false};  //四个选项全为True，才可以跳转
+    private Button startMainActBtn;  //Start main page.
+    private Button selectCountryBtn, selectProvinceBtn, selectOccupBtn, selectBirthBtn;  //Selece country\province\job\birthday
+    private String initCountryStr, initProvinceStr, initOccupStr, initBirthStr;  //个人选项结果String表示
+    private int user_country, user_province, user_occupa, user_year, user_month, user_day;  //个人选项结果的索引表示
+    private Boolean[] isAllSelect = new Boolean[]{false, false, false, false};  //控制是否跳转：四个选项全为True，才可以跳转
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -60,11 +58,16 @@ public class GuideActivity extends AppCompatActivity implements View.OnClickList
         initEvent();
     }
 
-    private void initData() {
+    /**
+     * Initialize data.
+     */
+    private void initData() {}
 
-    }
-
+    /**
+     * Initialize view.
+     */
     private void initView() {
+        //五个主要按钮
         startMainActBtn = (Button) findViewById(R.id.start_main_act_button);
         selectCountryBtn = (Button) findViewById(R.id.select_country_button);
         selectProvinceBtn = (Button) findViewById(R.id.select_province_button);
@@ -72,7 +75,9 @@ public class GuideActivity extends AppCompatActivity implements View.OnClickList
         selectBirthBtn = (Button) findViewById(R.id.select_birthday_button);
     }
 
-
+    /**
+     * Initialize event.
+     */
     private void initEvent() {
         startMainActBtn.setOnClickListener(this);
         selectCountryBtn.setOnClickListener(this);
@@ -81,27 +86,30 @@ public class GuideActivity extends AppCompatActivity implements View.OnClickList
         selectBirthBtn.setOnClickListener(this);
     }
 
+    //Click event handler.
     @Override
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.start_main_act_button:
-                if(isAllSelect[0] && isAllSelect[1] && isAllSelect[2] && isAllSelect[3]){
-                    //全部选项均选择后，判断是否存储数据成功
-                    funcSaveNewCountdownInSharePre();  // 保存新倒计时的SharePre文件
-                    if(funcSaveFactorInSharePre()) {
-                        //计算剩余时间并保存
-                        funcReadFactorFromSharePre(this);  //首先将各个要素写入才能使用
-                        hourLeft = calcuRestHour();
-                        minuteLeft = calcuRestMinute();
-                        secondLeft = calcuRestSecond();
+                if(isAllSelect[0] && isAllSelect[1] && isAllSelect[2] && isAllSelect[3]){  //所有选项均选过了，才可以进行下一步判定
+                    //funcSaveNewCountdownInSharePre();  // 保存新倒计时的SharePre文件
+                    if(funcSaveFactorInSharePre(this,user_country,user_province,user_occupa,user_year,
+                            user_month,user_day)) {  //各个因素保存成功后再进行下一步计算
+                        funcReadFactorFromSharePre(this);  //首先将各个要素写入FactorForLifespan
+                        hourLeft = calcuRestHour();  //计算剩余时间
+                        minuteLeft = calcuRestMinute();  //计算剩余分钟数
+                        secondLeft = calcuRestSecond();  //计算剩余秒钟数
                         //Toast.makeText(this, "" + hourLeft + ":" + minuteLeft + ":" +secondLeft, Toast.LENGTH_SHORT).show();
-                        if(funcSaveTimeInSharePre()) {
+                        if(funcSaveTimeInSharePre(this,hourLeft,minuteLeft,secondLeft)) {  //将剩余时间计算结果保存到 user_left_time
+                            //弹出确认信息的对话框
                             funcConfirmInfo(initCountryStr+"-"+initProvinceStr+"\n"+initOccupStr+"\n"+initBirthStr);
                         }
                     } else {
+                        //各个因素保存不成功
                         funcAlertInfo("Couldn't save data in local!");
                     }
                 } else {
+                    //有遗漏信息没有填写/选择
                     funcAlertInfo("Some information is missing!");
                 }
                 break;
@@ -122,100 +130,7 @@ public class GuideActivity extends AppCompatActivity implements View.OnClickList
         }
     }
 
-    /**
-     * 保存 LifeSpan factor in local
-     * @return
-     */
-    private boolean funcSaveFactorInSharePre() {
-        Boolean result;
-        try {
-            SharedPreferences.Editor editor = getSharedPreferences("user_lifespan_factor",MODE_PRIVATE).edit();
-            editor.putInt("id",0);
-            editor.putString("user_name","Tom");
-            editor.putInt("countryCode",user_country);
-            editor.putInt("provinceCode",user_province);
-            editor.putInt("occupationCode",user_occupa);
-            editor.putInt("birthYear",user_year);
-            editor.putInt("birthMonth",user_month);
-            editor.putInt("birthDay",user_day);
-            editor.apply();
-            result = true;
-        } catch (Exception e) {
-            result = false;
-        }
-        return result;
-    }
-
-    /**
-     * 保存剩余时间
-     * @return
-     */
-    private boolean funcSaveTimeInSharePre() {
-        Boolean result;
-        try {
-            SharedPreferences.Editor editor = getSharedPreferences("user_left_time",MODE_PRIVATE).edit();
-            editor.putInt("id",0);
-            editor.putString("user_name","Tom");
-            editor.putLong("hourLeft",hourLeft.longValue());
-            editor.putLong("minuteLeft",minuteLeft.longValue());
-            editor.putLong("secondLeft",secondLeft.longValue());
-            editor.apply();
-            result = true;
-        } catch (Exception e) {
-            result = false;
-        }
-        return result;
-    }
-
-    /**
-     * 保存剩余时间
-     * @return
-     */
-    private boolean funcSaveNewCountdownInSharePre() {
-        Boolean result;
-        try {
-            SharedPreferences.Editor editor = getSharedPreferences("new_countdown",MODE_PRIVATE).edit();
-            editor.putInt("id",0);
-            editor.putString("user_name","Tom");
-            editor.putInt("flag",0);
-            editor.putString("name","");
-            editor.putLong("newCountdownHour",-1L);
-            editor.putLong("newCountdownMinute",-1L);
-            editor.putLong("newCountdownSecond",-1L);
-            editor.apply();
-            result = true;
-        } catch (Exception e) {
-            result = false;
-        }
-        return result;
-    }
-    private void funcConfirmInfo(String msg) {
-        AlertDialog.Builder builder = new android.support.v7.app.AlertDialog.Builder(this);
-        builder.setTitle("Confirm");
-        builder.setMessage(msg);
-        builder.setNegativeButton("取消", null);
-        builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                Intent intent = new Intent(GuideActivity.this, MainActivity.class);
-                startActivity(intent);
-                finish();
-            }
-        });
-        builder.show();
-    }
-
-    private void funcAlertInfo(String msg) {
-        AlertDialog.Builder builder = new android.support.v7.app.AlertDialog.Builder(this);
-        builder.setTitle("Warning");
-        builder.setMessage(msg);
-        builder.setPositiveButton("确定", null);
-        builder.show();
-    }
-
-    /**
-     * 选择相关信息以计算剩余时间
-     */
+    //选择国家
     private void funcSelectCountryDialog() {
         final String countryList[] = countryCodeList;
         AlertDialog.Builder builder = new android.support.v7.app.AlertDialog.Builder(this);
@@ -236,6 +151,7 @@ public class GuideActivity extends AppCompatActivity implements View.OnClickList
         builder.show();
     }
 
+    //选择省份
     private void funcSelectProvinceDialog() {
         final String provinceList[] = provinceCodeList;
         AlertDialog.Builder builder = new android.support.v7.app.AlertDialog.Builder(this);
@@ -256,6 +172,7 @@ public class GuideActivity extends AppCompatActivity implements View.OnClickList
         builder.show();
     }
 
+    //选择职业
     private void funcSelectOccupDialog() {
         final String occupList[] = occupationCodeList;
         AlertDialog.Builder builder = new android.support.v7.app.AlertDialog.Builder(this);
@@ -276,6 +193,7 @@ public class GuideActivity extends AppCompatActivity implements View.OnClickList
         builder.show();
     }
 
+    //选择生日
     private void funcSelectBirthDialog() {
         final StringBuffer birthday = new StringBuffer();
         //获取Calendar对象，用于获取当前时间
@@ -306,36 +224,50 @@ public class GuideActivity extends AppCompatActivity implements View.OnClickList
         datePickerDialog.show();
     }
 
+    //弹出确认信息对话框
+    private void funcConfirmInfo(String msg) {
+        AlertDialog.Builder builder = new android.support.v7.app.AlertDialog.Builder(this);
+        builder.setTitle("Confirm");
+        builder.setMessage(msg);
+        builder.setNegativeButton("取消", null);
+        builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Intent intent = new Intent(GuideActivity.this, MainActivity.class);
+                startActivity(intent);
+                finish();
+            }
+        });
+        builder.show();
+    }
 
-    /**
-     * 对于不同版本的安卓系统实现沉浸式体验
-     */
+    //弹出提示对话框
+    private void funcAlertInfo(String msg) {
+        AlertDialog.Builder builder = new android.support.v7.app.AlertDialog.Builder(this);
+        builder.setTitle("Warning");
+        builder.setMessage(msg);
+        builder.setPositiveButton("确定", null);
+        builder.show();
+    }
+
+    //对于不同版本的安卓系统实现沉浸式体验
     private void setImmersiveMode() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            //5.0 全透明实现
-            //getWindow.setStatusBarColor(Color.TRANSPARENT)
             Window window = getWindow();
             window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
             window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
             window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
             window.setStatusBarColor(Color.TRANSPARENT);
-            //调用静态方法设置沉浸式状态栏
             Utils.setStateBarColor(this);
         } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT && Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
-            //4.4 全透明状态栏
-            //底部导航栏透明
             getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
-            //顶部状态栏透明
             getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-
             ViewGroup contentLayout = (ViewGroup) this.findViewById(android.R.id.content);
             View contentChild = contentLayout.getChildAt(0);
             contentChild.setFitsSystemWindows(false);  // 这里设置成侵占状态栏，反而不会侵占状态栏，太坑
             Utils.setupStatusBarView(this, contentLayout, Color.parseColor("#4A90E2"));
-            //隐藏底部导航栏
             View decorView = getWindow().getDecorView();
             int uiOptions = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION;
-            //int uiOptions = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION | View.SYSTEM_UI_FLAG_FULLSCREEN;  此时将同时隐藏状态栏
             decorView.setSystemUiVisibility(uiOptions);
         }
     }
