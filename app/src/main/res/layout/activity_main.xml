@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:fab="http://schemas.android.com/apk/res-auto"
     android:background="@color/background_color_main"
     tools:context=".MainActivity">
 
@@ -57,17 +58,58 @@
             android:layout_height="wrap_content" />
     </LinearLayout>
 
+    <LinearLayout
+        android:id="@+id/newCountDownHolder"
+        android:orientation="horizontal"
+        android:visibility="gone"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp"
+        android:layout_below="@id/timeShowHolder"
+        android:gravity="center_horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/newCountDownHourShowTxt"
+            android:text="0:"
+            android:textColor="@color/text_color_n"
+            android:textSize="@dimen/text_size_s"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:id="@+id/newCountDownMinuteShowTxt"
+            android:text="0:"
+            android:textColor="@color/text_color_n"
+            android:textSize="@dimen/text_size_s"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:id="@+id/newCountDownSecondShowTxt"
+            android:text="0:"
+            android:textColor="@color/text_color_n"
+            android:textSize="@dimen/text_size_s"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:id="@+id/newCountDownMileSecondShowTxt"
+            android:text="0"
+            android:textColor="@color/text_color_n"
+            android:textSize="@dimen/text_size_s"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+
     <TextView
         android:id="@+id/SayingShowTxt"
         android:layout_centerHorizontal="true"
         android:layout_below="@id/timeShowHolder"
-        android:text="Time is gone!"
+        android:text="@string/main_page_saying"
         android:textColor="@color/text_color_n"
         android:gravity="center"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
-        android:layout_marginTop="15dp"
-        android:textSize="@dimen/text_size_n"
+        android:layout_alignParentBottom="true"
+        android:textSize="@dimen/text_size_s"
         android:layout_width="match_parent"
         android:layout_height="100dp" />
 
@@ -79,6 +121,7 @@
         android:layout_marginRight="20dp"
         android:layout_alignParentRight="true"
         android:layout_marginBottom="20dp"
-        app:fabSize="normal"
+        app:fabSize="mini"
+        android:src="@mipmap/ic_add_black_24dp"
         app:backgroundTint="@color/floatbutton_color_n"/>
 </RelativeLayout>

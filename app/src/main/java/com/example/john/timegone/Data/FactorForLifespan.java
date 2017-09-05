@@ -1,7 +1,5 @@
 package com.example.john.timegone.Data;
 
-import java.math.BigDecimal;
-
 /**
  * Created by john on 2017/9/3.
  */
@@ -26,6 +24,6 @@ public class FactorForLifespan {
             "青海", "宁夏", "台湾", "新疆", "香港", "澳门}"};
     public static String[] occupationCodeList = new String[]{"-", "程序员", "产品经理", "大佬", "学生"};
 
-    public static BigDecimal hourLeft, minuteLeft, secondLeft;  //剩余时间计算结果
+    public static long hourLeft, minuteLeft, secondLeft;  //剩余时间计算结果
 
 }
